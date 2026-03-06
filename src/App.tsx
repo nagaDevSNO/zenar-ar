@@ -32,7 +32,6 @@ export default function App() {
 
   return (
     <div style={{ width: "100vw", height: "100vh", background: "black", overflow: "hidden" }}>
-      {/* Brightness overlay */}
       <div
         style={{
           position: "fixed",
@@ -45,7 +44,6 @@ export default function App() {
         }}
       />
 
-      {/* Header / status */}
       <div
         style={{
           position: "fixed",
@@ -66,7 +64,7 @@ export default function App() {
           Active scene: <b>{activeScene ?? "none"}</b>
         </div>
         <div style={{ opacity: 0.6, fontSize: 11, marginTop: 6 }}>
-          Markers: Hiro = Forest · Kanji = Ocean · LetterA = Rain
+          Test marker: Hiro only
         </div>
       </div>
 
@@ -88,18 +86,17 @@ export default function App() {
             <h2 style={{ margin: "0 0 8px" }}>Camera error</h2>
             <p style={{ margin: 0, opacity: 0.8 }}>{cameraError}</p>
             <p style={{ opacity: 0.6, fontSize: 13, marginTop: 12 }}>
-              Try Chrome/Safari on mobile. Some devices require HTTPS for camera access.
+              Open this on HTTPS in Safari or Chrome on mobile.
             </p>
           </div>
         </div>
       )}
 
-      {/* AR Scene */}
       <a-scene
         embedded
-        arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: true; detectionMode: mono; patternRatio: 0.8; sourceWidth: 1280; sourceHeight: 720;"
-        renderer="antialias: true; alpha: true; precision: medium;"
         vr-mode-ui="enabled: false"
+        renderer="logarithmicDepthBuffer: true; precision: medium; antialias: true; alpha: true;"
+        arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: true; detectionMode: mono; patternRatio: 0.8;"
       >
         <a-assets>
           <audio
@@ -108,89 +105,23 @@ export default function App() {
             preload="auto"
             crossOrigin="anonymous"
           ></audio>
-          <audio
-            id="ocean-audio"
-            src="https://cdn.pixabay.com/download/audio/2021/11/24/audio_3499119565.mp3?filename=ocean-waves-112906.mp3"
-            preload="auto"
-            crossOrigin="anonymous"
-          ></audio>
-          <audio
-            id="rain-audio"
-            src="https://cdn.pixabay.com/download/audio/2021/08/09/audio_88447e769f.mp3?filename=soft-rain-ambient-111154.mp3"
-            preload="auto"
-            crossOrigin="anonymous"
-          ></audio>
         </a-assets>
 
-        {/* HIRO TEST - keep this simple until detection works */}
         <a-marker preset="hiro" id="forest" marker-handler>
-          <a-box position="0 0.5 0" depth="0.5" height="0.5" width="0.5" color="yellow"></a-box>
-        </a-marker>
+          <a-box
+            position="0 0.5 0"
+            scale="0.5 0.5 0.5"
+            color="yellow"
+          ></a-box>
 
-        {/* OCEAN - Kanji marker */}
-        <a-marker preset="kanji" id="ocean" marker-handler>
-          <a-entity position="0 0 0">
-            <a-plane
-              rotation="-90 0 0"
-              width="2.5"
-              height="2.5"
-              color="#0077be"
-              opacity="0.85"
-              animation="property: position; from: 0 0 0; to: 0 0.08 0; dir: alternate; dur: 2000; loop: true"
-            ></a-plane>
-
-            <a-sphere position="0.4 0 -0.4" radius="0.2" color="#c2b280"></a-sphere>
-
-            <a-entity
-              sound={`src: #ocean-audio; autoplay: true; loop: true; volume: ${activeScene === "ocean" ? volume : 0}`}
-            ></a-entity>
-
-            <a-text value="Ocean Serenity" position="0 1.5 0" align="center" width="4" color="#fff"></a-text>
-          </a-entity>
-        </a-marker>
-
-        {/* RAIN - Letter A pattern marker */}
-        <a-marker
-          type="pattern"
-          url="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@master/data/data/patt.a"
-          id="rain"
-          marker-handler
-        >
-          <a-entity position="0 0 0">
-            <a-plane rotation="-90 0 0" width="2" height="2" color="#0b1220" opacity="0.5"></a-plane>
-
-            <a-entity id="rain-particles">
-              {Array.from({ length: 22 }).map((_, i) => {
-                const x = (Math.random() - 0.5) * 2;
-                const z = (Math.random() - 0.5) * 2;
-                const startY = 1 + Math.random() * 1.5;
-                const dur = 500 + Math.random() * 600;
-                return (
-                  <a-cylinder
-                    key={i}
-                    position={`${x} ${startY} ${z}`}
-                    radius="0.005"
-                    height="0.2"
-                    color="#a5f3fc"
-                    opacity="0.6"
-                    animation={`property: position; to: ${x} 0 ${z}; dur: ${dur}; loop: true; easing: linear`}
-                  ></a-cylinder>
-                );
-              })}
-            </a-entity>
-
-            <a-entity
-              sound={`src: #rain-audio; autoplay: true; loop: true; volume: ${activeScene === "rain" ? volume : 0}`}
-            ></a-entity>
-
-            <a-text value="Rainy Retreat" position="0 1.5 0" align="center" width="4" color="#fff"></a-text>
-          </a-entity>
+          <a-entity
+            sound={`src: #forest-audio; autoplay: true; loop: true; volume: ${activeScene === "forest" ? volume : 0}`}
+          ></a-entity>
         </a-marker>
 
         <a-entity camera></a-entity>
       </a-scene>
 
-      {/* Bottom controls */}
       <div
         style={{
           position: "fixed",
@@ -226,7 +157,7 @@ export default function App() {
             onChange={(e) => setVolume(parseFloat(e.target.value))}
           />
           <div style={{ fontSize: 11, opacity: 0.6, marginTop: 6 }}>
-            Tip: audio may require tapping the screen once on mobile.
+            Tap the screen once if audio does not start on mobile.
           </div>
         </div>
 
