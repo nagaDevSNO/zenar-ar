@@ -7,8 +7,15 @@ export default function App() {
   const [cameraError, setCameraError] = useState<string | null>(null);
 
   useEffect(() => {
-    const onFound = (e: any) => setActiveScene(e.detail?.id ?? null);
-    const onLost = () => setActiveScene(null);
+    const onFound = (e: any) => {
+      console.log("FOUND:", e.detail?.id);
+      setActiveScene(e.detail?.id ?? null);
+    };
+
+    const onLost = (e: any) => {
+      console.log("LOST:", e.detail?.id);
+      setActiveScene(null);
+    };
 
     window.addEventListener("zenar-marker-found", onFound as any);
     window.addEventListener("zenar-marker-lost", onLost as any);
@@ -90,12 +97,11 @@ export default function App() {
       {/* AR Scene */}
       <a-scene
         embedded
-        arjs="sourceType: webcam; debugUIEnabled: false; detectionMode: mono; videoTexture: true;"
-        renderer="antialias: true; alpha: true;"
+        arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: true; detectionMode: mono; patternRatio: 0.8; sourceWidth: 1280; sourceHeight: 720;"
+        renderer="antialias: true; alpha: true; precision: medium;"
         vr-mode-ui="enabled: false"
       >
         <a-assets>
-          {/* Remote audio (no keys). Replace with local files later if you want. */}
           <audio
             id="forest-audio"
             src="https://cdn.pixabay.com/download/audio/2022/01/18/audio_d0c6ff1326.mp3?filename=forest-with-birds-singing-12053.mp3"
@@ -116,27 +122,10 @@ export default function App() {
           ></audio>
         </a-assets>
 
-        {/* FOREST - Hiro marker */}
-        {/* <a-marker preset="hiro" id="forest" marker-handler>
-          <a-entity position="0 0 0">
-            <a-plane rotation="-90 0 0" width="2" height="2" color="#2f5d3a" opacity="0.85"></a-plane>
-
-            <a-cylinder position="-0.5 0.5 0" radius="0.05" height="1" color="#4b3621"></a-cylinder>
-            <a-sphere position="-0.5 1 0" radius="0.3" color="#2d5a27"></a-sphere>
-
-            <a-cylinder position="0.5 0.4 0.3" radius="0.05" height="0.8" color="#4b3621"></a-cylinder>
-            <a-sphere position="0.5 0.8 0.3" radius="0.25" color="#3a6b35"></a-sphere>
-
-            <a-entity
-              sound={`src: #forest-audio; autoplay: true; loop: true; volume: ${activeScene === "forest" ? volume : 0}`}
-            ></a-entity>
-
-            <a-text value="Forest Sanctuary" position="0 1.5 0" align="center" width="4" color="#fff"></a-text>
-          </a-entity>
-        </a-marker> */}
-        <a-marker preset="hiro">
-          <a-box position="0 0.5 0" color="yellow"></a-box>
-            </a-marker>
+        {/* HIRO TEST - keep this simple until detection works */}
+        <a-marker preset="hiro" id="forest" marker-handler>
+          <a-box position="0 0.5 0" depth="0.5" height="0.5" width="0.5" color="yellow"></a-box>
+        </a-marker>
 
         {/* OCEAN - Kanji marker */}
         <a-marker preset="kanji" id="ocean" marker-handler>
@@ -160,7 +149,7 @@ export default function App() {
           </a-entity>
         </a-marker>
 
-        {/* RAIN - Letter A pattern marker (patt.a) */}
+        {/* RAIN - Letter A pattern marker */}
         <a-marker
           type="pattern"
           url="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@master/data/data/patt.a"
