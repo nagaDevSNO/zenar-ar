@@ -2,12 +2,32 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/zenar-ar/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>zenar-ar</title>
-    <script type="module" crossorigin src="/zenar-ar/assets/index-kIFz4257.js"></script>
-    <link rel="stylesheet" crossorigin href="/zenar-ar/assets/index-hoDP6v4Q.css">
+    <title>ZenAR</title>
+
+    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+
+    <script>
+      AFRAME.registerComponent("marker-handler", {
+        init: function () {
+          this.el.addEventListener("markerFound", () => {
+            window.dispatchEvent(
+              new CustomEvent("zenar-marker-found", { detail: { id: this.el.id } })
+            );
+          });
+          this.el.addEventListener("markerLost", () => {
+            window.dispatchEvent(
+              new CustomEvent("zenar-marker-lost", { detail: { id: this.el.id } })
+            );
+          });
+        },
+      });
+    </script>
+    <script type="module" crossorigin src="/zenar-ar/assets/index-zG1I6Vyr.js"></script>
+    <link rel="stylesheet" crossorigin href="/zenar-ar/assets/index-DYNe0TyM.css">
   </head>
+
   <body>
     <div id="root"></div>
   </body>
