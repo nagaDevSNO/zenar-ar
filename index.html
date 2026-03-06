@@ -2,36 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ZenAR</title>
-
-    <!-- A-Frame -->
-    <!-- <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script> -->
-    <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-    <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-
-    <!-- AR.js (pinned stable version) -->
-    <!-- <script src="https://cdn.jsdelivr.net/gh/AR-js-org/AR.js@3.4.5/aframe/build/aframe-ar.js"></script> -->
-
-    <script>
-      // Forward markerFound/markerLost events to React via window CustomEvents
-      AFRAME.registerComponent("marker-handler", {
-        init: function () {
-          this.el.addEventListener("markerFound", () => {
-            window.dispatchEvent(
-              new CustomEvent("zenar-marker-found", { detail: { id: this.el.id } })
-            );
-          });
-          this.el.addEventListener("markerLost", () => {
-            window.dispatchEvent(
-              new CustomEvent("zenar-marker-lost", { detail: { id: this.el.id } })
-            );
-          });
-        },
-      });
-    </script>
+    <title>zenar-ar</title>
   </head>
-
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
