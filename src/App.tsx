@@ -115,9 +115,9 @@ export default function App() {
             crossOrigin="anonymous"
           ></audio>
         </a-assets>
-{/* 
+
         {/* FOREST - Hiro marker */}
-        <a-marker preset="hiro" id="forest" marker-handler>
+        {/* <a-marker preset="hiro" id="forest" marker-handler>
           <a-entity position="0 0 0">
             <a-plane rotation="-90 0 0" width="2" height="2" color="#2f5d3a" opacity="0.85"></a-plane>
 
@@ -134,10 +134,9 @@ export default function App() {
             <a-text value="Forest Sanctuary" position="0 1.5 0" align="center" width="4" color="#fff"></a-text>
           </a-entity>
         </a-marker> */}
-
         <a-marker preset="hiro">
-  <a-box position="0 0.5 0" color="yellow"></a-box>
-</a-marker>
+          <a-box position="0 0.5 0" color="yellow"></a-box>
+            </a-marker>
 
         {/* OCEAN - Kanji marker */}
         <a-marker preset="kanji" id="ocean" marker-handler>
